@@ -1,3 +1,4 @@
+import base64
 import os
 import pandas as pd
 import dash
@@ -6,8 +7,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 from dash.dependencies import Input, Output
 
-# 文件路径设置
-analysis_folder = r"D:\Pycharm\Python大作业\analysis"
+_ROOT = os.path.dirname(os.path.abspath(__file__))
+analysis_folder = os.path.join(_ROOT, "analysis")
+cleaned_folder = os.path.join(_ROOT, "cleaned")
 summary_csv = os.path.join(analysis_folder, "summary_statistics.csv")
 low_price_days_csv = os.path.join(analysis_folder, "overall_low_price_days.csv")
 
@@ -92,7 +94,7 @@ def update_boxplot(_):
     fig = go.Figure()
     for name in product_names:
         # 尝试读取该商品的清洗文件
-        csv_path = os.path.join(r"D:\Pycharm\Python大作业\cleaned", f"{name}_cleaned.csv")
+        csv_path = os.path.join(cleaned_folder, f"{name}_cleaned.csv")
         if os.path.exists(csv_path):
             df = pd.read_csv(csv_path)
             df['price_价格'] = pd.to_numeric(df['price_价格'], errors='coerce')
@@ -114,8 +116,6 @@ def update_images(product_name):
     fft_uri = f"data:image/png;base64,{base64_image(fft_path)}"
     return trend_uri, fft_uri
 
-# 辅助函数：将图片转为 base64 显示
-import base64
 def base64_image(image_path):
     with open(image_path, "rb") as f:
         return base64.b64encode(f.read()).decode("utf-8")

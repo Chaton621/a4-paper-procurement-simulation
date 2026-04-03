@@ -1,9 +1,11 @@
 import csv
+import os
 import pandas as pd
 from datetime import datetime
 import numpy as np
 
-price_file = r"D:\Pycharm\Python大作业\analysis\daily_average_price_all_products.csv"
+_ROOT = os.path.dirname(os.path.abspath(__file__))
+price_file = os.path.join(_ROOT, "analysis", "daily_average_price_all_products.csv")
 input_csv = "input_data.csv"
 output_csv = "output_data.csv"
 
